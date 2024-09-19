@@ -34,7 +34,7 @@ The remainder of this paper is structured as follows. @sec-data....
 
 ```{r}
 #| label: fig-marriage
-#| fig-cap: Bills of penguins
+#| fig-cap: Marriage Licenses Issued
 #| echo: false
 
 data |> 
