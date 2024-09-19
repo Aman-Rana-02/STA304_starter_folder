@@ -12,10 +12,12 @@
 library(tidyverse)
 
 #### Test data ####
-data <- read.csv("data/raw_data/simulated.csv")
+data <- read.csv("data/analysis_data/sim_marriage_analysis_data.csv")
 
 #Test for negative numbers
+data$Licenses_Issued |> min() <= 0
 
-#Test for NAs
+# Test for NAs
+all(is.na(data$Licenses_Issued))
 
 
