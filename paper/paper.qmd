@@ -26,9 +26,9 @@ data <- read_csv(here::here("data/analysis_data/marriage_analysis_data.csv"))
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR, @opendatatoronto, and @rohan.
+We use @citeR, @opendatatoronto, and @rohan.
 
-The remainder of this paper is structured as follows. @sec-data....
+This paper is to show marriage licenses over time in Toronto. @sec-data
 
 # Data {#sec-data}
 
@@ -43,7 +43,8 @@ data |>
 
 ```
 
-We see marriages have seasonality in @fig-marriage as expected.
+We see marriages have seasonality in @fig-marriage as expected. 
+Data becomes sparser post 2020, we can assume this could be from effects from covid-19, lower appetite for marriage in tougher socio-economic environments. But it could be a feature of the data collection process itself. It is worth reaching out to @opendatatoronto to see if its because more recent marriage license data is unavailable due to some underlying governmental process.
 
 \newpage
 
