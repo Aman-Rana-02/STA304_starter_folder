@@ -20,12 +20,14 @@ bibliography: references.bib
 
 library(tidyverse)
 library(palmerpenguins)
+
+data <- read_csv(here::here("data/analysis_data/marriage_analysis_data.csv"))
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+You can and should cross-reference sections and sub-sections. We use @citeR, @opendatatoronto, and @rohan.
 
 The remainder of this paper is structured as follows. @sec-data....
 
