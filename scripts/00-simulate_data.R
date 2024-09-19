@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Simulates... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Simulates Marriage Data
+# Author: Aman Rana
+# Date: 19 September 2024
+# Contact: aman.rana@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: None
+# Any other information needed? None
 
 
 #### Workspace setup ####
@@ -27,6 +27,7 @@ marriage_data <- tibble(
   Month = month(date_seq, label = TRUE)  # Extract month
 )
 
+write_csv(marriage_data, "data/analysis_data/sim_marriage_analysis_data.csv")
 
 
 

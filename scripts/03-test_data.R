@@ -1,23 +1,23 @@
 #### Preamble ####
-# Purpose: Tests... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Tests the dtaa from opendata toronto
+# Author: Aman Rana
+# Date: 19 September 2024
+# Contact: aman.rana@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: None
+# Any other information needed? None
 
 
 #### Workspace setup ####
 library(tidyverse)
 
 #### Test data ####
-data <- read.csv("data/analysis_data/sim_marriage_analysis_data.csv")
+data <- read.csv("data/analysis_data/marriage_analysis_data.csv")
 
 #Test for negative numbers
-data$Licenses_Issued |> min() <= 0
+data$marriage_licenses |> min() <= 0
 
 # Test for NAs
-all(is.na(data$Licenses_Issued))
+all(is.na(data$marriage_licenses))
 
 
