@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the raw consultant ependiture data
+# Author: Aman Rana
+# Date: 24 September 2024
+# Contact: aman.rana@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: merged_raw_expenditure_data.csv from 01-download_data
+# Any other information needed? NA
 
 #### Workspace setup ####
 library(tidyverse)
@@ -33,6 +33,11 @@ cleaned_data <- cleaned_data %>%
 # Count the number of NAs in each column
 na_counts <- sapply(cleaned_data, function(x) sum(is.na(x)))
 na_counts
+
+cleaned_data <- cleaned_data %>%
+  drop_na() %>%
+  filter(across(where(is.numeric), ~ . > 0))
+
 val_count_cols = c('budget_type', 'city_abc', 'expense_category', 'division_board')
 value_counts <- lapply(names(cleaned_data), function(col) {
   if (col %in% val_count_cols) {

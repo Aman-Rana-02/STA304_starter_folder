@@ -40,13 +40,49 @@ Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 #| fig-cap: Bills of penguins
 #| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+
+library(ggplot2)
+all_data <- read.csv("data/analysis_data/expenditure_analysis_data.csv")
+all_data$expenditure <- as.numeric(all_data$expenditure)
+
+# Expenditure by Year
+ggplot(all_data, aes(x = year, y = expenditure, fill = year)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Total Expenditure by Year", x = "Year", y = "Expenditure") +
+  theme_minimal()
+
+# Expenditure by Division Board
+ggplot(all_data, aes(x = division_board, y = expenditure)) +
+  geom_boxplot() +
+  labs(title = "Expenditure Distribution by Division", x = "Division", y = "Expenditure") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))  # Rotate x-axis labels
+
+# Aggregating expenditure by consultant and selecting the top 10
+top_consultants <- all_data %>%
+  group_by(consultants_name) %>%
+  summarise(total_expenditure = sum(expenditure, na.rm = TRUE)) %>%
+  arrange(desc(total_expenditure)) %>%
+  head(10)
+
+# Plotting top consultants
+ggplot(top_consultants, aes(x = reorder(consultants_name, total_expenditure), y = total_expenditure)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  labs(title = "Top 10 Consultants by Total Expenditure", x = "Consultants", y = "Total Expenditure") +
+  theme_minimal()
+
+         
+# Expenditure by Category and Year
+ggplot(all_data, aes(x = year, y = expenditure, fill = expense_category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Expenditure by Category and Year", x = "Year", y = "Expenditure") +
+  theme_minimal()
+
+# Contract Count by Year
+ggplot(all_data, aes(x = year)) +
+  geom_bar(fill = "lightgreen") +
+  labs(title = "Number of Contracts by Year", x = "Year", y = "Number of Contracts") +
+  theme_minimal()
 ```
 
 Talk more about it.

@@ -1,11 +1,11 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Downloads, merges, and saves expenditure data from opendatatoronto
+# Author: Aman Rana
+# Date: 24 September 2024
+# Contact: aman.rana@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: NA
+# Any other information needed? NA
 
 
 #### Workspace setup ####
@@ -96,50 +96,5 @@ all_data <- all_data %>%
 
 
 #### Save data ####
-# [...UPDATE THIS...]
 # change the_raw_data to whatever name you assigned when you downloaded it.
 write_csv(all_data, "data/raw_data/merged_raw_expenditure_data.csv")
-
-library(ggplot2)
-
-# Convert expenditure to numeric (if needed)
-all_data$expenditure <- as.numeric(all_data$expenditure)
-
-# Expenditure by Year
-ggplot(all_data, aes(x = year, y = expenditure, fill = year)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Total Expenditure by Year", x = "Year", y = "Expenditure") +
-  theme_minimal()
-
-# Expenditure by Division Board
-ggplot(all_data, aes(x = division_board, y = expenditure)) +
-  geom_boxplot() +
-  labs(title = "Expenditure Distribution by Division", x = "Division", y = "Expenditure") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))  # Rotate x-axis labels
-
-# Aggregating expenditure by consultant and selecting the top 10
-top_consultants <- all_data %>%
-  group_by(consultants_name) %>%
-  summarise(total_expenditure = sum(expenditure, na.rm = TRUE)) %>%
-  arrange(desc(total_expenditure)) %>%
-  head(10)
-
-# Plotting top consultants
-ggplot(top_consultants, aes(x = reorder(consultants_name, total_expenditure), y = total_expenditure)) +
-  geom_bar(stat = "identity", fill = "skyblue") +
-  coord_flip() +
-  labs(title = "Top 10 Consultants by Total Expenditure", x = "Consultants", y = "Total Expenditure") +
-  theme_minimal()
-
-         
-# Expenditure by Category and Year
-ggplot(all_data, aes(x = year, y = expenditure, fill = expense_category)) +
-  geom_bar(stat = "identity", position = "stack") +
-  labs(title = "Expenditure by Category and Year", x = "Year", y = "Expenditure") +
-  theme_minimal()
-
-# Contract Count by Year
-ggplot(all_data, aes(x = year)) +
-  geom_bar(fill = "lightgreen") +
-  labs(title = "Number of Contracts by Year", x = "Year", y = "Number of Contracts") +
-  theme_minimal()
