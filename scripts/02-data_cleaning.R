@@ -27,19 +27,18 @@ cleaned_data <- cleaned_data %>%
          division_board = toupper(division_board))
 
 cleaned_data <- cleaned_data %>%
-  mutate( budget_type = case_when(
-  budget_type %in% c("OPERATING", "OPERATION") ~ "OPERATING"))
+  mutate(budget_type = case_when(
+  budget_type %in% c("OPERATING", "OPERATION") ~ "OPERATING", TRUE ~ budget_type))
 
 # Count the number of NAs in each column
 na_counts <- sapply(cleaned_data, function(x) sum(is.na(x)))
 na_counts
-# val_count_cols = c('budget_type', 'city_abc', 'expense_category', 'division_board')
-val_count_cols = c('division_board')
+val_count_cols = c('budget_type', 'city_abc', 'expense_category', 'division_board')
 value_counts <- lapply(names(cleaned_data), function(col) {
   if (col %in% val_count_cols) {
     return(cleaned_data %>% count(!!sym(col)))
   } else {
-    return(NULL)  # Skip columns not in val_count_cols
+    return(NULL)
   }
 })
 
@@ -49,18 +48,29 @@ value_counts
 cleaned_data <- cleaned_data %>%
   mutate(
     division_board = case_when(
-      division_board %in% c("city clerk's office", "city clerks's office") ~ "city clerk's office",
-      division_board %in% c("toronto police service", "toronto police service (tps)", "toronto police services (tps)") ~ "toronto police service",
-      division_board %in% c("children services", "children's services") ~ "children services",
-      # Add more standardizations here
+      division_board %in% c("SOCIAL DEVELOPMENT FINANCE & ADMINISTRATION") ~ "SOCIAL DEVELOPMENT, FINANCE & ADMINISTRATION",
+      division_board %in% c("INFORMATION & TECHNOLOGY", "INFORMATION TECHNOLOGY") ~ "INFORMATION & TECHNOLOGY",
+      division_board %in% c("TORONTO POLICE SERVICES (TPS)", "TORONTO POLICE SERVICE (TPS)","TORONTO POLICE SERVICES (TPS)",
+                            "TORONTO POLICE SERVICES BOARD(TPSB)","TORONTO POLICE SERVICE (TPS)", "TORONTO POLICE SERVICES BOARD", 
+                            "TORONTO POLICE SERVICES BOARD (TPSB)") ~ "TORONTO POLICE SERVICE",
+      division_board %in% c("TRANSPORTATION") ~ "TRANSPORTATION SERVICES",
       TRUE ~ division_board
     )
   )
 
-top_50_division_board <- value_counts[[5]] %>%
+#Manually review the names.
+s_division_board <- value_counts[[5]] %>%
   arrange(desc(n))
-top_50_division_board
+s_division_board
+
+s_city_abc <- value_counts[[3]] %>%
+  arrange(desc(n))
+s_city_abc
+
+s_expense_category <- value_counts[[4]] %>%
+  arrange(desc(n))
+s_expense_category
 
 cleaned_data
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(cleaned_data, "data/analysis_data/expenditure_analysis_data.csv")
