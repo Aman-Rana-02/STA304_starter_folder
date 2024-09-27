@@ -77,8 +77,6 @@ We now have the table @data-head.
 
 Upon inspection, there are a few non-standardised naming schemes in the divison_board and expense_categories, 'operating' also exists as 'Operation' and a few spelling mistakes/variations in the Toronto Police Service's naming. To account for this, I manually standardise these naming schemes and sort through the dsata to make sure no large expenses are unaccounted for due to a spelling mistake or variation.
 
-Here is a sample of the table
-
 ```{r}
 #| label: data-head
 #| echo: false
@@ -191,7 +189,7 @@ We find that Deloitte and EY have a growing share of the City of Toronto's capit
 
 # Weaknesses and next steps {#sec-future-work}
 
-The results I have shown are somewhat naive. The increasing share could be becuase of more competitive pricing as these larger more established firms get more sophisticated and are able to better price their contracts. They could also be follow-ups on prior contract, leading to a cumulative effect of greater allocation. Further work would involve looking at these trends across industries, and seeing where any outliers in expenditure exist, if there are smaller firms taking on a few high paying contracts, those might be better examples of preferential treatment. However, the data is sound and the results do still show a proportional increase in expenditure, and an investigation into the tender procedure could be warranted shoudl the future work show more systematic abnormal allocation.
+The results I have shown are somewhat naive. The increasing share could be because of more competitive pricing as these larger more established firms get more sophisticated and are able to better price their contracts. They could also be follow-ups on prior contract, leading to a cumulative effect of greater allocation. Further work would involve looking at these trends across industries, and seeing where any outliers in expenditure exist, if there are smaller firms taking on a few high paying contracts, those might be better examples of preferential treatment. However, the data is sound and the results do still show a proportional increase in expenditure, and an investigation into the tender procedure could be warranted shoudl the future work show more systematic abnormal allocation.
 
 \newpage
 
