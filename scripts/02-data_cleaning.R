@@ -63,6 +63,16 @@ cleaned_data <- cleaned_data %>%
     )
   )
 
+cleaned_data <- cleaned_data %>%
+  mutate(
+    expense_category = case_when(
+      expense_category %in% c("INFO TECHNOLOGY") ~ "INFORMATION TECHNOLOGY",
+      expense_category %in% c("MGMT/R&D") ~ "MANAGEMENT / RESEARCH & DEVELOPMENT",
+      expense_category %in% c("TRANSPORTATION") ~ "TRANSPORTATION SERVICES",
+      TRUE ~ expense_category
+    )
+  )
+
 #Manually review the names.
 s_division_board <- value_counts[[5]] %>%
   arrange(desc(n))
