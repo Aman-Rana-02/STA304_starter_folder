@@ -3,7 +3,7 @@ title: "Consultant Expenditures and Fair Allocation in Toronto"
 subtitle: "An assessment of Toronto's capital allocation"
 author: 
   - Aman Rana
-thanks: "Code and data are available at: LINK."
+thanks: "Code and data are available at: https://github.com/Aman-Rana-02/STA304_starter_folder/tree/Toronto-Consultant-Expenditure"
 date: September 27 2024
 date-format: long
 abstract: "The Canadian federal government has been under scrutiny since the widely reported ArriveCAN scandal, which brought to light a severe misappropriation of funds through contractors. In light of these events, I investigate the allocation of funds to consultants by the City of Toronto. Exploring expenditure, I find an increasing budget allocation to consultants, and a tendency to allocate to a few key consultants. I suggest future work which could lead to a more complete evaluation and a possible investigation into the bidding process. "
@@ -81,10 +81,9 @@ Here is a sample of the table
 
 ```{r}
 #| label: data-head
-#| fig-cap: Data Sample
 #| echo: false
 
-knitr::kable(head(all_data, 1), "latex", booktabs = TRUE, caption = "Data Sample") %>%
+knitr::kable(head(all_data, 5), "latex", booktabs = TRUE, caption = "Data Sample") %>%
   kable_styling(latex_options = c("scale_down"), font_size = 11)
 ```
 
