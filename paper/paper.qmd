@@ -18,52 +18,87 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(ggplot2)
+
+all_data <- read_csv(here::here("data/analysis_data/expenditure_analysis_data.csv"))
+all_data$expenditure <- as.numeric(all_data$expenditure)
 ```
 
 
 # Introduction
 The CBSA (Canadian Border Security Agency) and Public Health Agency of Canada spent over $53 Million Dollars on an app which was created using 23 subcontractors. The contract process was unfair and non-competitive, with an internal report finding that the government criteria preferred one contractor over others @ArriveCANScandalFacts. The people of a city benefit from fair and efficient markets, as such the allocation of its tax dollars should follow a transparent and robust tender process.
 
-In this paper I explored the City of Toronto's consultant expenditure data, sourced from @opendatatoronto.
-I looked for any abnormal concentration of funds, or systematic patters that could suggest a biased tender process.
-I use @citeR and @rohan in the process of my analysis, and arrive to a few simple conclusions.
+In this paper we explore the City of Toronto's consultant expenditure data, sourced from @opendatatoronto.
+We looked for any abnormal concentration of funds, or systematic patters that could suggest a biased tender process.
+We use @citeR, @ggplot2, and @tidyverse in the process of my analysis, and arrive to a few simple conclusions.
 
-Through illustrative plots, we find that consultant expenditure has been growing steadily over the last few years, across a variety of verticals. 
+Through illustrative plots, we find that consultant expenditure has been growing steadily over the last few years, across a variety of verticals. We then observe the data and notice that two consultants dominate expenditure; Deloitte and Ernst & Young. We then look at their allocation as a fraction of total yearly expenditure and observe their share of the City's expenditure to be growing over time. 
+
+We consider a few possible driving factors and reccomend future work that could enable more robust conclusions on the competitive nature of the City's tender process.
+
 
 The remainder of this paper is structured as follows:
- @sec-data Walks through the Data collection and cleaning.
+@sec-data Walks through the Data collection and cleaning.
  
- @sec-results Introduces a few plots which illustrate evidence of concentration.
+@sec-results Introduces a few plots which illustrate evidence of concentration.
  
- @sec-discussion Discusses the possible driving processes for this concentration.
+@sec-discussion Discusses the possible driving processes for this concentration.
  
- @sec-future-work Discusses possible future work that could lead to a more robust conclusion.
+@sec-future-work Discusses possible future work that could lead to a more robust conclusion.
 
 # Data {#sec-data}
 
-I grab the data from @opendatatoronto, which returns excel's for the years 2012-2016, 2022-2023, and 2017-2021. I then merge the dtaa to a single large dataset to make it easier to manipulate, dropping to only the following columns: year, budget_type, city_abc, expense_category, division_board, consultants_name, description_of_the_work, expenditure. I had to rename some columns to standardise the merge across the three different data files, and these details can be found in the repository. 
+I grab the data from @opendatatoronto, which returns excel workbooks for the years 2012-2016, 2022-2023, and 2017-2021. I then merge the data to a single large dataset to make it easier to manipulate, dropping to only the following columns: 
+year - Year of the expenditure (2012-2023), \n
+budget_type - Type of Budget which is Operating or Capital, \n
+city_abc - City Specification, \n
+expense_category - Type of Expenditure, IT/Transportation/Management etc., \n
+division_board - Which division of the City incurred the expense, \n
+consultants_name - Consultant on the project, \n
+description_of_the_work - Brief free-text explanation of the work, \n
+expenditure - Dollar amount of the project, \n
+
+had to rename some columns to standardise the merge across the three different data files, and these details can be found in the repository. 
+
+We now have the table @data-head.
+
+Upon inspection, there are a few non-standardised naming schemes in the divison_board and expense_categories, 'operating' also exists as 'Operation' and a few spelling mistakes/variations int eh Toronto Police Service's naming. To account for this, I manually standardise these naming schemes and sort through the dsata to make sure no large expenses are unaccounted for due to a spelling mistake or variation.
 
 ```{r}
 #| label: data-head
 #| fig-cap: Data Sample
 #| echo: false
 
-all_data <- read_csv("~/Documents/STA304/Term_Paper_1/paper/expenditure_analysis_data.csv")
-all_data$expenditure <- as.numeric(all_data$expenditure)
-all_data.head(5)
+head(all_data, 5)
+```
 
+# Results{sec-results}
+
+The first establishing point we notice is that expenditure has been increasing year on year as seen in @yearly-cat-expenditure.
+
+```{r}
+#| label: yearly-cat-expenditure
+#| fig-cap: Yearly Expenditure by Category
+#| echo: false
+         
+# Expenditure by Category and Year
+ggplot(all_data, aes(x = year, y = expenditure, fill = expense_category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Expenditure by Category and Year", x = "Year", y = "Expenditure") +
+  theme_minimal()
+
+# Aggregate expenditure by expense_category and get top 5 categories
+top_categories <- all_data %>%
+  group_by(expense_category) %>%
+  summarise(total_expenditure = sum(expenditure, na.rm = TRUE)) %>%
+  arrange(desc(total_expenditure)) %>%
+  head(5)
 ```
 
 ```{r}
 #| label: top-consultants
 #| fig-cap: Expenditure by Consultant
 #| echo: false
-
-
-library(ggplot2)
-all_data <- read_csv("~/Documents/STA304/Term_Paper_1/paper/expenditure_analysis_data.csv")
-all_data$expenditure <- as.numeric(all_data$expenditure)
 
 # Expenditure by Year
 ggplot(all_data, aes(x = year, y = expenditure, fill = year)) +
@@ -84,24 +119,6 @@ ggplot(top_consultants, aes(x = reorder(consultants_name, total_expenditure), y 
   coord_flip() +
   labs(title = "Top 10 Consultants by Total Expenditure", x = "Consultants", y = "Total Expenditure") +
   theme_minimal()
-```
-```{r}
-#| label: yearly-cat-expenditure
-#| fig-cap: Yearly Expenditure by Category
-#| echo: false
-         
-# Expenditure by Category and Year
-ggplot(all_data, aes(x = year, y = expenditure, fill = expense_category)) +
-  geom_bar(stat = "identity", position = "stack") +
-  labs(title = "Expenditure by Category and Year", x = "Year", y = "Expenditure") +
-  theme_minimal()
-
-# Aggregate expenditure by expense_category and get top 5 categories
-top_categories <- all_data %>%
-  group_by(expense_category) %>%
-  summarise(total_expenditure = sum(expenditure, na.rm = TRUE)) %>%
-  arrange(desc(total_expenditure)) %>%
-  head(5)
 ```
 
 ```{r}
@@ -146,8 +163,6 @@ deloitte_plot <- ggplot(consultant_share %>% filter(consultants_name %in% c("Del
 print(ey_plot)
 print(deloitte_plot)
 ```
-
-# Results{sec-results}
 
 
 # Discussion{sec-discussion}
