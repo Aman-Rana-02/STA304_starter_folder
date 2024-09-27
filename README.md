@@ -18,4 +18,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, ChatGPT, namely the graphs. THat code was then copy and pasted and adjusted slightly for other graphs in the apper. The entire chat history is available in inputs/llms/usage.txt.
+Aspects of the code were written with the help of the auto-complete tool, ChatGPT, namely the graphs. That code was then copy and pasted and adjusted slightly for other graphs in the paper. The entire chat history is available in inputs/llms/usage.txt.
