@@ -49,14 +49,14 @@ The remainder of this paper is structured as follows:
 # Data {#sec-data}
 
 I grab the data from @opendatatoronto, which returns excel workbooks for the years 2012-2016, 2022-2023, and 2017-2021. I then merge the data to a single large dataset to make it easier to manipulate, dropping to only the following columns: 
-year - Year of the expenditure (2012-2023), \n
-budget_type - Type of Budget which is Operating or Capital, \n
-city_abc - City Specification, \n
-expense_category - Type of Expenditure, IT/Transportation/Management etc., \n
-division_board - Which division of the City incurred the expense, \n
-consultants_name - Consultant on the project, \n
-description_of_the_work - Brief free-text explanation of the work, \n
-expenditure - Dollar amount of the project, \n
+year - Year of the expenditure (2012-2023),
+budget_type - Type of Budget which is Operating or Capital,
+city_abc - City Specification,
+expense_category - Type of Expenditure, IT/Transportation/Management etc.,
+division_board - Which division of the City incurred the expense,
+consultants_name - Consultant on the project,
+description_of_the_work - Brief free-text explanation of the work,
+expenditure - Dollar amount of the project,
 
 had to rename some columns to standardise the merge across the three different data files, and these details can be found in the repository. 
 
@@ -72,9 +72,7 @@ Upon inspection, there are a few non-standardised naming schemes in the divison_
 head(all_data, 5)
 ```
 
-# Results{sec-results}
-
-The first establishing point we notice is that expenditure has been increasing year on year as seen in @yearly-cat-expenditure.
+# Results {#sec-results}
 
 ```{r}
 #| label: yearly-cat-expenditure
@@ -95,6 +93,7 @@ top_categories <- all_data %>%
   head(5)
 ```
 
+The first establishing point we notice is that expenditure has been increasing year on year as seen in @yearly-cat-expenditure. We also see in the figure @top-consultants that Deloitte and 
 ```{r}
 #| label: top-consultants
 #| fig-cap: Expenditure by Consultant
@@ -109,7 +108,7 @@ ggplot(all_data, aes(x = year, y = expenditure, fill = year)) +
 # Aggregating expenditure by consultant and selecting the top 10
 top_consultants <- all_data %>%
   group_by(consultants_name) %>%
-  summarise(total_expenditure = sum(expenditure, na.rm = TRUE)) %>%
+  summarise(total_expenditure = sum(expenditure, na.rm = TRUE, .groups = year)) %>%
   arrange(desc(total_expenditure)) %>%
   head(10)
 
@@ -165,22 +164,13 @@ print(deloitte_plot)
 ```
 
 
-# Discussion{sec-discussion}
+# Discussion {#sec-discussion}
 
-## Weaknesses and next steps{sec-future-work}
+# Weaknesses and next steps {#sec-future-work}
 
 Weaknesses and next steps should also be included.
 
 \newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-
 
 \newpage
 
