@@ -115,3 +115,114 @@ Response:
   4. **Line Plots**: Two line plots are created, one for EY and one for Deloitte, showing their share of expenditure over time.
   
   This will generate two plots: one for EY and another for Deloitte, showing how their share of total expenditure changes year by year.
+  
+  
+  ______
+  
+  Prompt:
+  Here is a sample of the table
+
+{r}
+#| label: data-head
+#| fig-cap: Data Sample
+#| echo: false
+
+knitr::kable(head(all_data, 1), caption = "Data Sample", )
+
+
+Response:
+From the image you provided, it seems that the table formatting is problematic: the column headers are too wide for the table, causing the text to wrap awkwardly, and some elements appear misaligned. This can happen when a table contains long text or column names that don’t fit well within the PDF layout.
+
+Here are several approaches to fix this:
+
+### 1. **Use `kableExtra` to Add Line Breaks or Adjust Column Widths**
+The `kableExtra` package can help you handle wide tables in a more structured manner, by either adding line breaks to long text or adjusting the width of columns.
+
+#### Installation:
+First, install the `kableExtra` package if you haven’t already:
+
+```r
+install.packages("kableExtra")
+```
+
+#### Modify the Table Code:
+You can format the table and add options for handling the column width using `kableExtra`. Here’s how:
+
+```r
+#| label: data-head
+#| fig-cap: Data Sample
+#| echo: false
+
+library(kableExtra)
+
+knitr::kable(head(all_data, 1), "latex", booktabs = TRUE, caption = "Data Sample") %>%
+  kable_styling(latex_options = "scale_down")
+```
+
+- **`kable_styling(latex_options = "scale_down")`**: This option will automatically scale the table down to fit within the page width in PDF output.
+- **`booktabs = TRUE`**: Produces cleaner-looking tables with better vertical spacing.
+
+### 2. **Manually Adjust Column Widths**
+If some columns have very long text (like descriptions or names), you can manually adjust column widths by setting a specific width for those columns.
+
+Here’s how you can do this using `column_spec` from `kableExtra`:
+
+```r
+#| label: data-head
+#| fig-cap: Data Sample
+#| echo: false
+
+library(kableExtra)
+
+knitr::kable(head(all_data, 1), "latex", booktabs = TRUE, caption = "Data Sample") %>%
+  column_spec(1, width = "5em") %>%   # Adjust first column's width
+  column_spec(2, width = "10em") %>%  # Adjust second column's width, etc.
+  kable_styling(latex_options = "scale_down")
+```
+
+### 3. **Rotate Long Text Columns**
+If some columns have very long names or content (e.g., "description_of_the_work"), you can rotate the column headers to save space:
+
+```r
+#| label: data-head
+#| fig-cap: Data Sample
+#| echo: false
+
+library(kableExtra)
+
+knitr::kable(head(all_data, 1), "latex", booktabs = TRUE, caption = "Data Sample") %>%
+  column_spec(1, angle = 90) %>%  # Rotate text in first column
+  kable_styling(latex_options = "scale_down")
+```
+
+### 4. **Wrap Text in Columns**
+To avoid wrapping the text awkwardly across columns, you can wrap the text in cells using the `linebreak` function in `kableExtra`. This will ensure that long text is split into multiple lines, but within the same cell:
+
+```r
+#| label: data-head
+#| fig-cap: Data Sample
+#| echo: false
+
+library(kableExtra)
+
+knitr::kable(head(all_data, 1), "latex", booktabs = TRUE, caption = "Data Sample") %>%
+  column_spec(3, width = "10em") %>%  # Adjust column width
+  kable_styling(latex_options = "scale_down")
+```
+
+### 5. **Reduce Text Size**
+You can also reduce the font size to make the table fit better. To do this, use the `font_size` option:
+
+```r
+#| label: data-head
+#| fig-cap: Data Sample
+#| echo: false
+
+library(kableExtra)
+
+knitr::kable(head(all_data, 1), "latex", booktabs = TRUE, caption = "Data Sample") %>%
+  kable_styling(latex_options = c("scale_down"), font_size = 7)
+```
+
+### Conclusion
+These approaches should help improve the appearance of your table in the PDF. You can choose one or combine multiple techniques, like scaling down the table, adjusting column widths, and wrapping text, to get the best result. Let me know how it works or if you need further adjustments!
